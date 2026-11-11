@@ -2,6 +2,7 @@
   pages/instructor/login.vue: instructor login (/instructor/login).
 
   When no database is connected (demo mode), a yellow note shows the demo login.
+  "‹ Back to student view" returns to the student site (/).
 
   login()  sends the username and password to /api/auth/login. On success it refreshes
            the session and goes to the instructor home page; otherwise it shows the error.
@@ -31,7 +32,10 @@ async function login() {
 </script>
 
 <template>
-  <form class="mx-auto mt-12 grid max-w-[360px] gap-3" @submit.prevent="login">
+  <!-- Replaces the login page in history, so the browser's Back doesn't return to it. -->
+  <NuxtLink to="/" replace class="inline-block pt-2.5 pb-1">‹ Back to student view</NuxtLink>
+
+  <form class="mx-auto mt-8 grid max-w-[360px] gap-3" @submit.prevent="login">
     <h1 class="mb-1 text-[26px] font-bold">Instructor login</h1>
     <p v-if="demo?.demo" class="border border-black bg-yellow-100 px-2.5 py-2 text-[15px]">
       <b>Demo mode:</b> no database is connected, so changes are temporary.
