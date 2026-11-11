@@ -13,7 +13,8 @@
   real one is hidden and a black block is drawn after the typed text instead. An invisible
   copy of the text in the same font pushes the block to the right spot. The block only
   shows while the cursor is at the end of the text; if it moves (arrow keys, a click inside
-  the text, a selection), the normal cursor comes back until it returns to the end.
+  the text, a selection), the normal cursor comes back until it returns to the end. While the
+  box is empty, the block sits after the hint text ("Type your name█").
 
   checkCaret()  records whether the cursor is at the end of the text (and nothing is selected).
                 Runs after anything that can move the cursor.
@@ -70,7 +71,7 @@ onMounted(() => {
           aria-hidden="true"
           class="pointer-events-none absolute inset-0 flex items-center overflow-hidden px-[18px] text-2xl"
         >
-          <span class="invisible whitespace-pre">{{ text }}</span>
+          <span class="invisible whitespace-pre">{{ text || placeholder }}</span>
           <span class="ml-0.5 h-[1.1em] w-[0.55em] shrink-0 animate-blink bg-black motion-reduce:animate-none" />
         </div>
       </div>
