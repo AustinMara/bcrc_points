@@ -20,6 +20,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, statusMessage: 'Invalid username or password' })
   }
 
+  if (!process.env.NUXT_SESSION_PASSWORD) {
+    throw createError({ statusCode: 500, statusMessage: 'NUXT_SESSION_PASSWORD is not set on the server' })
+  }
   await setUserSession(event, {
     user: { id: instructor.id, username: instructor.username, name: instructor.name },
   })
