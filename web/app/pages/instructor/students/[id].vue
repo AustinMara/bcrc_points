@@ -2,7 +2,8 @@
   pages/instructor/students/[id].vue: one student's page (/instructor/students/:id). Login required.
 
   Shows the student's full name and total, a star toggle, the points form, and their
-  points history (newest first, drawn by components/PointsHistory.vue).
+  points history (newest first, drawn by components/PointsHistory.vue). "‹ Back" works like
+  the browser's Back button (see components/BackLink.vue).
 
   give(points, reason)  saves points for this student (called by PointsForm), then
                         reloads the total and history. awardPoints() also updates the
@@ -24,7 +25,7 @@ async function give(points: number, reason: string) {
 </script>
 
 <template>
-  <NuxtLink to="/instructor" class="inline-block pt-2.5 pb-1">‹ Back</NuxtLink>
+  <BackLink fallback="/instructor" />
   <p v-if="error" class="text-red-700">Student not found.</p>
 
   <template v-else-if="data">

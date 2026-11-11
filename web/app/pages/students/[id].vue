@@ -2,24 +2,16 @@
   pages/students/[id].vue: a student's public ledger (/students/:id). No login.
 
   Shows first name + last initial, the total, and every points entry (reason and amount).
-
-  goBack()  returns to the search the kid came from (the search text is kept in the
-            address), or to the home page if they opened this page directly.
+  "‹ Back to search" works like the browser's Back button (see components/BackLink.vue).
 -->
 <script setup lang="ts">
 const route = useRoute()
-const router = useRouter()
 const { data, error } = await useFetch<PublicStudentDetail>(`/api/public/students/${route.params.id}`)
-
-function goBack() {
-  if (router.options.history.state.back) router.back()
-  else navigateTo('/')
-}
 </script>
 
 <template>
   <div class="mx-auto max-w-xl">
-    <a href="/" class="inline-block pt-2.5 pb-1" @click.prevent="goBack">‹ Back to search</a>
+    <BackLink fallback="/">‹ Back to search</BackLink>
 
     <p v-if="error" class="mt-4 text-red-700">We couldn't find that student.</p>
 
