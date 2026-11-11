@@ -7,6 +7,17 @@
  *
  * Searching checks the cache first, so results appear instantly. The server is
  * only asked when the cache might be missing matches.
+ *
+ * favorites                     the instructor's starred students (from the cache)
+ * isFavorite(id)                is this student starred?
+ * lookup(ids)                   turn ids back into students
+ * loadFavorites()               fetch starred students once per visit
+ * searchCache(text)             instant: cached students whose name contains the text
+ * cacheHasAllMatches(text)      true if an earlier complete search already covers this one
+ * fetchMatches(text)            ask the server for matches the cache might be missing
+ * awardPoints(ids, value, why)  save points, then update the cached totals
+ * addStudent(first, last)       add a student (the server stars them for you)
+ * toggleFavorite(id)            star or unstar a student
  */
 export function useRoster() {
   const cache = useState<Record<number, Student>>('roster:cache', () => ({}))

@@ -1,3 +1,5 @@
+// DELETE /api/favorites/:id: unstar a student for the logged-in instructor.
+
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
   const studentId = Number(getRouterParam(event, 'id'))

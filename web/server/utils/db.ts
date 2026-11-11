@@ -1,3 +1,12 @@
+// db.ts: the database connection. Nitro auto-imports these into every server file.
+//
+// isDemoDatabase()     true when there's no Turso URL and no local file, so the app
+//                      runs on a temporary in-memory demo database
+// useDb()              the shared database client, connected on first use
+// query(sql, args)     run one SQL statement, get the rows back as plain objects
+// placeholders(n)      "?, ?, ?" for an IN (...) list of n values
+// fillDemoDatabase()   (private) create the tables plus a demo instructor and students
+
 import { existsSync } from 'node:fs'
 import { createClient as createTursoClient, type Client, type InArgs } from '@libsql/client/web'
 import schema from '../database/schema.sql' // Nitro imports .sql files as plain text
@@ -25,13 +34,15 @@ export function useDb(): Promise<Client> {
 }
 
 async function connect(): Promise<Client> {
-  if (process.env.TURSO_DATABASE_URL) {
+  const url = process.env.TURSO_DATABASE_URL
+  if (url && !url.startsWith('file:')) {
     // Pure-JavaScript HTTP client: no native code, so it runs anywhere (including Vercel).
-    return createTursoClient({ url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN })
+    return createTursoClient({ url, authToken: process.env.TURSO_AUTH_TOKEN })
   }
 
-  // The local file and the demo database need SQLite itself, a native module, so load it only here.
+  // Local files and the demo database need SQLite itself, a native module, so load it only here.
   const { createClient } = await import('@libsql/client')
+  if (url) return createClient({ url }) // a file: URL, e.g. a test copy of the database
   if (!isDemoDatabase()) return createClient({ url: `file:${LOCAL_DB_FILE}` })
 
   const demo = createClient({ url: ':memory:' })

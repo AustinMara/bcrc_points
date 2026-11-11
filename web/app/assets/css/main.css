@@ -1,0 +1,62 @@
+/*
+  main.css: the whole site's look, built on Tailwind.
+
+  The style is a plain 90s web page (gray beveled buttons, sunken inputs, blue
+  links) in the Lexend font, with the club's colors from bellinghamcodingclub.com
+  as accents. Pages style themselves with Tailwind utility classes; this file only
+  defines what those classes are built from:
+
+    @theme       colors and font, which become utilities like bg-silver or text-club-teal
+    bevel-out    utility: raised 3D border (buttons, header bars)
+    bevel-in     utility: sunken 3D border (text boxes)
+    .btn         gray raised button that looks pressed when clicked
+    .btn-hot     the orange +50 button
+    .field       sunken white text box
+*/
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Lexend, Verdana, sans-serif;
+
+  --color-club-teal: #1e7c83;   /* darker club teal, readable as text on white */
+  --color-club-orange: #fd5c12;
+  --color-silver: #c0c0c0;      /* classic gray */
+  --color-shade: #808080;       /* bevel shadow */
+  --color-navy: #000080;        /* classic selection color */
+  --color-link: #0000ee;
+  --color-visited: #551a8b;
+}
+
+@utility bevel-out {
+  border: 2px solid;
+  border-color: #fff var(--color-shade) var(--color-shade) #fff;
+}
+
+@utility bevel-in {
+  border: 2px solid;
+  border-color: var(--color-shade) #fff #fff var(--color-shade);
+}
+
+@layer base {
+  * { -webkit-tap-highlight-color: transparent; }
+  body { @apply bg-white font-sans text-[17px] leading-normal text-black; -webkit-text-size-adjust: 100%; }
+  a { @apply text-link underline; }
+  a:visited { @apply text-visited; }
+  input[type="checkbox"] { @apply size-5 shrink-0; }
+}
+
+@layer components {
+  .btn {
+    @apply bevel-out cursor-pointer bg-silver px-3.5 py-1.5 text-base text-black shadow-[1px_1px_0_#000];
+  }
+  .btn:active:not(:disabled) { @apply bevel-in shadow-none; }
+  .btn:disabled { @apply cursor-default text-shade; text-shadow: 1px 1px 0 #fff; }
+
+  .btn-hot { @apply bg-club-orange text-lg font-bold; }
+
+  /* 16px+ text stops iPhones from zooming in when a box is tapped. */
+  .field {
+    @apply bevel-in min-w-0 bg-white px-2 py-1.5 text-black shadow-[inset_1px_1px_0_#000];
+    @apply focus:outline-1 focus:outline-offset-2 focus:outline-black focus:outline-dotted;
+  }
+}

@@ -1,4 +1,7 @@
-// Add a student. They're starred for the instructor who added them, so they show up right away.
+// POST /api/students: add a student (login required).
+// Body: { first_name, last_name }. The new student is starred for the instructor who
+// added them, so they show up on that instructor's home page right away.
+
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
   const { first_name, last_name } = await readBody<{ first_name?: string; last_name?: string }>(event)

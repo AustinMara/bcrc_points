@@ -1,4 +1,13 @@
+/*
+  nuxt.config.ts: project settings.
+
+  - Tailwind CSS (via its Vite plugin) and the site stylesheet, app/assets/css/main.css
+  - nuxt-auth-utils: encrypted-cookie logins for instructors
+  - The Lexend font from Google Fonts
+  - Build settings that make sure the database works on Vercel (see libsqlNativeBinaries)
+*/
 import { existsSync, readdirSync } from 'node:fs'
+import tailwindcss from '@tailwindcss/vite'
 
 // libsql loads its native SQLite binary (e.g. @libsql/linux-x64-gnu) with a dynamic require()
 // that the bundler can't follow, so list whichever one is installed. Only the local file and
@@ -14,6 +23,8 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   modules: ['nuxt-auth-utils'],
   devtools: { enabled: true },
+  css: ['~/assets/css/main.css'],
+  vite: { plugins: [tailwindcss()] },
   app: {
     head: {
       title: 'BCRC Points',

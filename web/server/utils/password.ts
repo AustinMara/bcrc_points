@@ -1,6 +1,12 @@
+// password.ts: password hashing, in the same format bcrc.py writes:
+// pbkdf2_sha256$<iterations>$<salt hex>$<hash hex>
+//
+// makePasswordHash(password)      hash a password (only the demo login needs this; the CLI
+//                                 creates real instructor accounts)
+// checkPassword(password, stored) true if the password matches the stored hash
+
 import { pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto'
 
-// Same format bcrc.py writes: pbkdf2_sha256$<iterations>$<salt hex>$<hash hex>
 const ITERATIONS = 600_000
 
 /** Hash a password. The CLI normally does this; the web app only needs it for the demo login. */
