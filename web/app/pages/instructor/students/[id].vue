@@ -2,7 +2,7 @@
   pages/instructor/students/[id].vue: one student's page (/instructor/students/:id). Login required.
 
   Shows the student's full name and total, a star toggle, the points form, and their
-  points history (newest first).
+  points history (newest first, drawn by components/PointsHistory.vue).
 
   give(points, reason)  saves points for this student (called by PointsForm), then
                         reloads the total and history. awardPoints() also updates the
@@ -40,13 +40,6 @@ async function give(points: number, reason: string) {
 
     <PointsForm :give="give" />
 
-    <h2 class="mt-6 border-b-[3px] border-double border-black pb-1 text-xl font-bold">History</h2>
-    <ul>
-      <li v-for="h in data.history" :key="h.id" class="flex justify-between gap-3 border-b border-silver py-2">
-        <span>{{ h.points_reason || '—' }}</span>
-        <span class="font-bold tabular-nums" :class="h.points_value < 0 && 'text-red-700'">{{ signed(h.points_value) }}</span>
-      </li>
-      <li v-if="!data.history.length" class="py-2 text-gray-600">No points yet.</li>
-    </ul>
+    <PointsHistory :history="data.history" />
   </template>
 </template>

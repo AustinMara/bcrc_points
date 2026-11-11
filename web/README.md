@@ -38,7 +38,9 @@ Changes there are lost whenever the server restarts.
 Every source file starts with a comment explaining what it does and what each function in it does.
 
 **Pages (routes)**
-- `/`: `app/pages/index.vue`, the public student site: type your name, see your points. No login.
+- `/`: `app/pages/index.vue`, the public student site: big search box, type your name, see your points. No login.
+  The search is kept in the address (`/?q=ben`) so Back from a ledger returns to the results.
+- `/students/:id`: a student's public ledger (first name + last initial, total, every award)
 - `/instructor`: `app/pages/instructor/index.vue`: search, multi-select, +50 bar, add student (+)
 - `/instructor/students/:id`: one student's total and history
 - `/instructor/login`: instructor login (shows the demo login in demo mode)
