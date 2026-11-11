@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
+    "dev:demo": "DEMO_MODE=true nuxt dev",
     "build": "nuxt build",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -16,6 +17,8 @@
     "vue-router": "^5.5.0"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "tailwindcss": "^4.3.5",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.14"
   }

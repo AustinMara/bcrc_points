@@ -1,5 +1,10 @@
-// Give (or take away) the same number of points to one or more students at once.
-// Returns the updated students so the page can refresh its cache without reloading anything.
+// POST /api/points: give (or take away) the same number of points to one or more students.
+//
+// Body: { student_ids: number[], value: number, reason?: string }
+// Validates the input, then runs two SQL statements in one transaction no matter how
+// many students: log every award in Points, then bump every total in Students.
+// Returns the updated students so the browser can refresh its cache without reloading.
+
 export default defineEventHandler(async (event) => {
   await requireUserSession(event)
   const body = await readBody<{ student_ids?: number[]; value?: number; reason?: string }>(event)

@@ -1,3 +1,10 @@
+// POST /api/auth/login: instructor login.
+//
+// Looks up the instructor by username and checks the password hash (made by bcrc.py).
+// On success it stores { id, username, name } in an encrypted session cookie.
+// Errors: 400 missing fields, 401 wrong login, 503 database unreachable,
+// 500 NUXT_SESSION_PASSWORD not set.
+
 export default defineEventHandler(async (event) => {
   const { username, password } = await readBody<{ username?: string; password?: string }>(event)
   if (!username || !password) {

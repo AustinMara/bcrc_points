@@ -1,0 +1,11 @@
+# Local database files (contain student data; never commit)
+*.db
+*.db-shm
+*.db-wal
+
+# Python
+.venv/
+__pycache__/
+
+# macOS
+.DS_Store

@@ -1,7 +1,12 @@
 <!--
-  Reason + custom amount + Give + a one-tap +50.
-  The parent passes `give`, which does the actual saving; this form handles
-  the busy state, errors, and clearing itself after a successful save.
+  PointsForm.vue: reason box, custom points box, Give, and a one-tap +50.
+  Used by the instructor home page (for everyone selected) and a student's page.
+
+  Props:
+    give(points, reason)  does the actual saving; the parent decides who gets the points.
+  Functions:
+    submit(points)        calls give(), shows a busy state and any error, and clears
+                          the form after a successful save.
 -->
 <script setup lang="ts">
 const props = defineProps<{ give: (points: number, reason: string) => Promise<void> }>()
@@ -30,20 +35,13 @@ async function submit(points: number | null) {
 </script>
 
 <template>
-  <form class="points-form" @submit.prevent="submit(amount)">
-    <input v-model="reason" placeholder="Reason (optional)" maxlength="64">
-    <div class="amount-row">
-      <input v-model.number="amount" type="number" step="1" placeholder="Points" aria-label="Points to give">
-      <button type="submit" :disabled="busy || !amount">Give</button>
-      <button type="button" class="hot" :disabled="busy" @click="submit(QUICK_POINTS)">{{ signed(QUICK_POINTS) }}</button>
+  <form class="grid grid-cols-[minmax(0,1fr)] gap-2" @submit.prevent="submit(amount)">
+    <input v-model="reason" class="field" placeholder="Reason (optional)" maxlength="64">
+    <div class="flex gap-2">
+      <input v-model.number="amount" type="number" step="1" class="field flex-1" placeholder="Points" aria-label="Points to give">
+      <button type="submit" class="btn" :disabled="busy || !amount">Give</button>
+      <button type="button" class="btn btn-hot" :disabled="busy" @click="submit(QUICK_POINTS)">{{ signed(QUICK_POINTS) }}</button>
     </div>
-    <p v-if="error" class="error">{{ error }}</p>
+    <p v-if="error" class="m-0 text-sm text-red-700">{{ error }}</p>
   </form>
 </template>
-
-<style scoped>
-.points-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-.amount-row { display: flex; gap: 8px; }
-.amount-row input { flex: 1; }
-.error { margin: 0; font-size: 14px; }
-</style>

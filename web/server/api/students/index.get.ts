@@ -1,4 +1,6 @@
-// Search students by name. Returns at most SEARCH_LIMIT matches so the page never loads the whole table.
+// GET /api/students?q=name: instructor search by name (login required).
+// Returns at most SEARCH_LIMIT matches, so the page never loads the whole table.
+
 export default defineEventHandler(async (event) => {
   await requireUserSession(event)
   const text = String(getQuery(event).q ?? '').trim()

@@ -1,3 +1,6 @@
+// PUT /api/favorites/:id: star a student for the logged-in instructor.
+// Starring twice, or starring a student id that doesn't exist, does nothing.
+
 export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
   const studentId = Number(getRouterParam(event, 'id'))
