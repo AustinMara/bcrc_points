@@ -6,7 +6,8 @@
   as accents. Pages style themselves with Tailwind utility classes; this file only
   defines what those classes are built from:
 
-    @theme       colors and font, which become utilities like bg-silver or text-club-teal
+    @theme       colors, font, and the cursor blink, which become utilities like bg-silver,
+                 text-club-teal, or animate-blink
     bevel-out    utility: raised 3D border (buttons, header bars)
     bevel-in     utility: sunken 3D border (text boxes)
     .btn         gray raised button that looks pressed when clicked
@@ -25,6 +26,12 @@
   --color-navy: #000080;        /* classic selection color */
   --color-link: #0000ee;
   --color-visited: #551a8b;
+
+  /* Old-terminal cursor blink: fully on, then fully off (no fade). */
+  --animate-blink: blink 1s steps(1) infinite;
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
 }
 
 @utility bevel-out {

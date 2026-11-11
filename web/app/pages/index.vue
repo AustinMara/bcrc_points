@@ -50,7 +50,7 @@ watch(debouncedText, async (text) => {
       <p class="mt-1 text-gray-700">Type your name, then tap it to see every point you've earned.</p>
     </div>
 
-    <SearchBar v-model="searchText" placeholder="Type your name" large />
+    <SearchBar v-model="searchText" placeholder="Type your name" large autofocus />
 
     <p v-if="tooShort" class="mt-2 text-center text-gray-600 italic">
       Type at least {{ PUBLIC_SEARCH_MIN_LETTERS }} letters.
