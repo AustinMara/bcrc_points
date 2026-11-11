@@ -11,9 +11,13 @@
 
   The retro cursor: browsers can't make the real text cursor thicker, so in large mode the
   real one is hidden and a black block is drawn after the typed text instead. An invisible
-  copy of the text in the same font pushes the block to the right spot. (It always sits at
-  the end of the text.) While the box is empty the placeholder is indented so the block
-  doesn't cover its first letter.
+  copy of the text in the same font pushes the block to the right spot. The block only
+  shows while the cursor is at the end of the text; if it moves (arrow keys, a click inside
+  the text, a selection), the normal cursor comes back until it returns to the end. While the
+  box is empty the placeholder is indented so the block doesn't cover its first letter.
+
+  checkCaret()  records whether the cursor is at the end of the text (and nothing is selected).
+                Runs after anything that can move the cursor.
 -->
 <script setup lang="ts">
 const props = defineProps<{ placeholder: string; large?: boolean; autofocus?: boolean }>()
@@ -21,6 +25,15 @@ const text = defineModel<string>({ required: true })
 
 const input = useTemplateRef<HTMLInputElement>('input')
 const focused = ref(false)
+const caretAtEnd = ref(true)
+const showBlock = computed(() => props.large && focused.value && caretAtEnd.value)
+
+function checkCaret() {
+  const el = input.value
+  if (!el) return
+  const end = el.value.length
+  caretAtEnd.value = el.selectionStart === end && el.selectionEnd === end
+}
 
 onMounted(() => {
   if (props.autofocus) input.value?.focus()
@@ -36,17 +49,25 @@ onMounted(() => {
           v-model="text"
           type="search"
           class="field w-full"
-          :class="large && 'px-4 py-3.5 text-2xl caret-transparent placeholder-shown:indent-[0.8em]'"
+          :class="[
+            large && 'px-4 py-3.5 text-2xl placeholder-shown:indent-[0.8em]',
+            showBlock && 'caret-transparent',
+          ]"
           :placeholder="placeholder"
           :aria-label="placeholder"
           enterkeyhint="search"
           autocomplete="off"
-          @focus="focused = true"
+          @focus="focused = true; checkCaret()"
           @blur="focused = false"
+          @input="checkCaret"
+          @keyup="checkCaret"
+          @click="checkCaret"
+          @select="checkCaret"
+          @selectionchange="checkCaret"
         >
         <!-- The retro block cursor (large mode only), drawn over the box. -->
         <div
-          v-if="large && focused"
+          v-if="showBlock"
           aria-hidden="true"
           class="pointer-events-none absolute inset-0 flex items-center overflow-hidden px-[18px] text-2xl"
         >
