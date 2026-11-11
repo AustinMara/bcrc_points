@@ -13,8 +13,7 @@
   real one is hidden and a black block is drawn after the typed text instead. An invisible
   copy of the text in the same font pushes the block to the right spot. The block only
   shows while the cursor is at the end of the text; if it moves (arrow keys, a click inside
-  the text, a selection), the normal cursor comes back until it returns to the end. While the
-  box is empty the placeholder is indented so the block doesn't cover its first letter.
+  the text, a selection), the normal cursor comes back until it returns to the end.
 
   checkCaret()  records whether the cursor is at the end of the text (and nothing is selected).
                 Runs after anything that can move the cursor.
@@ -50,7 +49,7 @@ onMounted(() => {
           type="search"
           class="field w-full"
           :class="[
-            large && 'px-4 py-3.5 text-2xl placeholder-shown:indent-[0.8em]',
+            large && 'px-4 py-3.5 text-2xl',
             showBlock && 'caret-transparent',
           ]"
           :placeholder="placeholder"
