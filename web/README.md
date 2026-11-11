@@ -19,6 +19,10 @@ Create instructor logins with the CLI in the parent folder (passwords use the sa
 3. Add environment variables: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`,
    `NUXT_SESSION_PASSWORD` (32+ random characters, e.g. `openssl rand -hex 32`).
 
+**Demo mode:** if `TURSO_DATABASE_URL` isn't set and there's no `../bcrcpoints.db` (e.g. a fresh
+Vercel deploy), the app runs on a temporary in-memory database. Log in with `demo` / `demo`.
+Changes there are lost whenever the server restarts.
+
 ## How it stays fast
 
 - The home page loads only the instructor's **starred students** (`Favorites` table), not the whole

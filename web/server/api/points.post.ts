@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
 
   // Two statements no matter how many students: log every award, then bump every total.
   // batch(..., 'write') runs them as one transaction, so either both happen or neither does.
-  await useDb().batch(
+  await (await useDb()).batch(
     [
       {
         sql: `INSERT INTO Points (student_id, points_reason, points_value) VALUES ${ids.map(() => '(?, ?, ?)').join(', ')}`,

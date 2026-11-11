@@ -8,40 +8,15 @@ Connection:
 
 import hashlib
 import os
+from pathlib import Path
 import random
 import secrets
 import sqlite3
 
 import click
 
-SCHEMA = [
-    """CREATE TABLE IF NOT EXISTS `Points` (
-        `id` integer PRIMARY KEY,
-        `student_id` integer,
-        `points_reason` text(64),
-        `points_value` integer NOT NULL
-    )""",
-    """CREATE TABLE IF NOT EXISTS `Instructors` (
-        `id` integer PRIMARY KEY,
-        `username` text NOT NULL UNIQUE,
-        `name` text,
-        `hashed_password` text NOT NULL,
-        `favorites` integer
-    )""",
-    """CREATE TABLE IF NOT EXISTS `Students` (
-        `id` integer PRIMARY KEY,
-        `first_name` text NOT NULL,
-        `points` integer,
-        `last_name` text NOT NULL
-    )""",
-    "CREATE INDEX IF NOT EXISTS `student_uid` ON `Points` (`student_id`)",
-    # Each instructor's starred students, shown on their home page.
-    """CREATE TABLE IF NOT EXISTS `Favorites` (
-        `instructor_id` integer NOT NULL REFERENCES `Instructors` (`id`),
-        `student_id` integer NOT NULL REFERENCES `Students` (`id`),
-        PRIMARY KEY (`instructor_id`, `student_id`)
-    )""",
-]
+# The table definitions live in one file, shared with the web app's demo database.
+SCHEMA_FILE = Path(__file__).parent / "web" / "server" / "database" / "schema.sql"
 
 PBKDF2_ITERATIONS = 600_000
 
@@ -89,8 +64,9 @@ def cli():
 def init_db():
     """Create the tables if they don't exist."""
     conn = get_conn()
-    for stmt in SCHEMA:
-        conn.execute(stmt)
+    for statement in SCHEMA_FILE.read_text().split(";"):
+        if statement.strip():
+            conn.execute(statement)
     conn.commit()
     click.echo("Schema ready.")
 

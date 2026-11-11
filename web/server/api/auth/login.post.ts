@@ -4,10 +4,18 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Username and password are required' })
   }
 
-  const [instructor] = await query<{ id: number; username: string; name: string | null; hashed_password: string }>(
-    'SELECT id, username, name, hashed_password FROM Instructors WHERE username = ?',
-    [username],
-  )
+  type InstructorRow = { id: number; username: string; name: string | null; hashed_password: string }
+  let instructor: InstructorRow | undefined
+  try {
+    ;[instructor] = await query<InstructorRow>(
+      'SELECT id, username, name, hashed_password FROM Instructors WHERE username = ?',
+      [username],
+    )
+  } catch (error) {
+    console.error('Login database error:', error) // shows up in Vercel's function logs
+    throw createError({ statusCode: 503, statusMessage: 'Could not reach the database. Check the Turso settings.' })
+  }
+
   if (!instructor || !checkPassword(password, instructor.hashed_password)) {
     throw createError({ statusCode: 401, statusMessage: 'Invalid username or password' })
   }

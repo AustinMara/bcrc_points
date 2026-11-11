@@ -1,9 +1,16 @@
-import { pbkdf2Sync, timingSafeEqual } from 'node:crypto'
+import { pbkdf2Sync, randomBytes, timingSafeEqual } from 'node:crypto'
 
-/**
- * Check a password against a hash made by bcrc.py (the CLI creates instructor accounts).
- * Stored format: pbkdf2_sha256$<iterations>$<salt hex>$<hash hex>
- */
+// Same format bcrc.py writes: pbkdf2_sha256$<iterations>$<salt hex>$<hash hex>
+const ITERATIONS = 600_000
+
+/** Hash a password. The CLI normally does this; the web app only needs it for the demo login. */
+export function makePasswordHash(password: string): string {
+  const salt = randomBytes(16)
+  const hash = pbkdf2Sync(password, salt, ITERATIONS, 32, 'sha256')
+  return `pbkdf2_sha256$${ITERATIONS}$${salt.toString('hex')}$${hash.toString('hex')}`
+}
+
+/** Check a password against a stored hash. */
 export function checkPassword(password: string, stored: string): boolean {
   const [algorithm, iterations, saltHex, hashHex] = stored.split('$')
   if (algorithm !== 'pbkdf2_sha256' || !iterations || !saltHex || !hashHex) return false

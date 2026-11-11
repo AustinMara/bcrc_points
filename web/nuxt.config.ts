@@ -13,4 +13,8 @@ export default defineNuxtConfig({
       ],
     },
   },
+  nitro: {
+    // Lets server/database/schema.d.sql.ts give schema.sql a type.
+    typescript: { tsConfig: { compilerOptions: { allowArbitraryExtensions: true } } },
+  },
 })
