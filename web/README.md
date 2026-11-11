@@ -23,6 +23,9 @@ Create instructor logins with the CLI in the parent folder (passwords use the sa
 Vercel deploy), the app runs on a temporary in-memory database. Log in with `demo` / `demo`.
 Changes there are lost whenever the server restarts.
 
+To try demo mode locally (where `bcrcpoints.db` exists), run `npm run dev:demo`, or set
+`DEMO_MODE=true`. That forces the demo database even if Turso or the local file is available.
+
 ## How it stays fast
 
 - The home page loads only the instructor's **starred students** (`Favorites` table), not the whole

@@ -1,7 +1,7 @@
 // db.ts: the database connection. Nitro auto-imports these into every server file.
 //
-// isDemoDatabase()     true when there's no Turso URL and no local file, so the app
-//                      runs on a temporary in-memory demo database
+// isDemoDatabase()     true when DEMO_MODE=true, or when there's no Turso URL and no local
+//                      file, so the app runs on a temporary in-memory demo database
 // useDb()              the shared database client, connected on first use
 // query(sql, args)     run one SQL statement, get the rows back as plain objects
 // placeholders(n)      "?, ?, ?" for an IN (...) list of n values
@@ -22,6 +22,7 @@ export const DEMO_LOGIN = { username: 'demo', password: 'demo' }
  *      Its data is lost whenever the server restarts.
  */
 export function isDemoDatabase(): boolean {
+  if (process.env.DEMO_MODE === 'true') return true // forced, e.g. `npm run dev:demo`
   return !process.env.TURSO_DATABASE_URL && !existsSync(LOCAL_DB_FILE)
 }
 
@@ -35,19 +36,20 @@ export function useDb(): Promise<Client> {
 
 async function connect(): Promise<Client> {
   const url = process.env.TURSO_DATABASE_URL
-  if (url && !url.startsWith('file:')) {
+  if (url && !url.startsWith('file:') && !isDemoDatabase()) {
     // Pure-JavaScript HTTP client: no native code, so it runs anywhere (including Vercel).
     return createTursoClient({ url, authToken: process.env.TURSO_AUTH_TOKEN })
   }
 
   // Local files and the demo database need SQLite itself, a native module, so load it only here.
   const { createClient } = await import('@libsql/client')
-  if (url) return createClient({ url }) // a file: URL, e.g. a test copy of the database
-  if (!isDemoDatabase()) return createClient({ url: `file:${LOCAL_DB_FILE}` })
-
-  const demo = createClient({ url: ':memory:' })
-  await fillDemoDatabase(demo)
-  return demo
+  if (isDemoDatabase()) {
+    const demo = createClient({ url: ':memory:' })
+    await fillDemoDatabase(demo)
+    return demo
+  }
+  // A file: URL (e.g. a test copy of the database), or the local bcrcpoints.db.
+  return createClient({ url: url ?? `file:${LOCAL_DB_FILE}` })
 }
 
 /** Run one SQL statement and return its rows as plain objects. */
