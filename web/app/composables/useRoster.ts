@@ -17,7 +17,8 @@
  * fetchMatches(text)            ask the server for matches the cache might be missing
  * awardPoints(ids, value, why)  save points, then update the cached totals
  * addStudent(first, last)       add a student (the server stars them for you)
- * toggleFavorite(id)            star or unstar a student
+ * toggleFavorite(id)            star or unstar a student (unstarred students stay listed with
+ *                               a hollow ☆ until the next page load, so a mis-tap is easy to undo)
  */
 export function useRoster() {
   const cache = useState<Record<number, Student>>('roster:cache', () => ({}))
@@ -37,8 +38,12 @@ export function useRoster() {
     return ids.map((id) => cache.value[id]).filter((student) => student !== undefined)
   }
 
+  // Students unstarred during this visit. They stay in the My Students list (with a hollow ☆)
+  // until the next page load, so a mis-tap on the star can be undone with one more tap.
+  const unstarredIds = useState<number[]>('roster:unstarred-ids', () => [])
+
   const favorites = computed(() => lookup(favoriteIds.value))
-  const isFavorite = (id: number) => favoriteIds.value.includes(id)
+  const isFavorite = (id: number) => favoriteIds.value.includes(id) && !unstarredIds.value.includes(id)
 
   /** Load the instructor's starred students once per visit. Later pages reuse the cache. */
   function loadFavorites() {
@@ -83,6 +88,8 @@ export function useRoster() {
   }
 
   function addToFavorites(id: number) {
+    unstarredIds.value = unstarredIds.value.filter((u) => u !== id)
+    if (favoriteIds.value.includes(id)) return // re-starred before leaving the page: it never left the list
     favoriteIds.value = lookup([...favoriteIds.value, id]).sort(byName).map((student) => student.id)
   }
 
@@ -99,7 +106,7 @@ export function useRoster() {
     const star = !isFavorite(id)
     await $fetch(`/api/favorites/${id}`, { method: star ? 'PUT' : 'DELETE' })
     if (star) addToFavorites(id)
-    else favoriteIds.value = favoriteIds.value.filter((f) => f !== id)
+    else unstarredIds.value = [...unstarredIds.value, id]
   }
 
   return {

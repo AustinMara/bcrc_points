@@ -127,7 +127,11 @@ async function submitNewStudent() {
   </ListHeader>
 
   <ul>
-    <!-- Tapping anywhere on the row selects it; the › opens the student's page. -->
+    <!--
+      Row layout: [☐ name  points] [›] | [★]
+      Tapping the name area selects the student; › opens their page; the star sits alone at
+      the far right behind a divider. Both buttons are 44×44px so thumbs don't hit the wrong one.
+    -->
     <li
       v-for="s in visibleStudents"
       :key="s.id"
@@ -139,18 +143,18 @@ async function submitNewStudent() {
         <span class="min-w-0 flex-1 truncate">{{ fullName(s) }}</span>
         <span class="font-bold tabular-nums">{{ s.points }}</span>
       </label>
+      <NuxtLink
+        :to="`/instructor/students/${s.id}`"
+        class="flex size-11 items-center justify-center text-3xl leading-none no-underline"
+        :class="selectedIds.has(s.id) ? 'text-white!' : 'text-black!'"
+        :aria-label="`Open ${fullName(s)}`"
+      >›</NuxtLink>
       <button
-        class="cursor-pointer px-2 py-1.5 text-xl"
+        class="ml-3 flex size-11 cursor-pointer items-center justify-center border-l border-silver text-2xl"
         :class="isFavorite(s.id) ? 'text-club-orange' : 'text-gray-400'"
         :aria-label="isFavorite(s.id) ? 'Remove from my students' : 'Add to my students'"
         @click="toggleFavorite(s.id)"
       >{{ isFavorite(s.id) ? '★' : '☆' }}</button>
-      <NuxtLink
-        :to="`/instructor/students/${s.id}`"
-        class="px-2 pt-0.5 pb-1.5 text-2xl leading-none no-underline"
-        :class="selectedIds.has(s.id) ? 'text-white!' : 'text-black!'"
-        :aria-label="`Open ${fullName(s)}`"
-      >›</NuxtLink>
     </li>
     <li v-if="!visibleStudents.length" class="px-1.5 py-3.5 text-gray-600 italic">
       <template v-if="!isSearching">No starred students yet. Search above and click ☆ to keep your regulars here.</template>
