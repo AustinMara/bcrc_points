@@ -26,7 +26,7 @@ async function give(points: number, reason: string) {
 
 <template>
   <BackLink fallback="/instructor" />
-  <p v-if="error" class="text-red-700">Student not found.</p>
+  <p v-if="error" class="text-danger">Student not found.</p>
 
   <template v-else-if="data">
     <div class="mb-3 flex items-start justify-between gap-3">

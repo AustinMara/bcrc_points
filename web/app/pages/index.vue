@@ -45,31 +45,37 @@ watch(debouncedText, async (text) => {
 
 <template>
   <div class="mx-auto max-w-xl">
-    <div class="mt-8 mb-2 text-center">
+    <img
+      src="/images/bcrc-logo.png"
+      alt="Bellingham + Skagit Coding + Robotics Club"
+      class="mx-auto mt-6 w-full max-w-md"
+    >
+
+    <div class="mt-6 mb-2 text-center">
       <h1 class="text-[34px] leading-tight font-bold">Check your points!</h1>
-      <p class="mt-1 text-gray-700">Type your name, then tap it to see every point you've earned.</p>
+      <p class="mt-1 text-muted">Type your name, then tap it to see every point you've earned.</p>
     </div>
 
     <SearchBar v-model="searchText" placeholder="Type your name" large autofocus />
 
-    <p v-if="tooShort" class="mt-2 text-center text-gray-600 italic">
+    <p v-if="tooShort" class="mt-2 text-center text-muted italic">
       Type at least {{ PUBLIC_SEARCH_MIN_LETTERS }} letters.
     </p>
 
     <ul v-else class="mt-2">
-      <li v-for="s in results" :key="s.id" class="border-b border-silver">
+      <li v-for="s in results" :key="s.id" class="border-b border-line">
         <NuxtLink
           :to="`/students/${s.id}`"
-          class="flex items-baseline justify-between gap-3 px-1.5 py-3 text-black! no-underline hover:bg-silver/30"
+          class="flex items-baseline justify-between gap-3 px-1.5 py-3 text-ink! no-underline hover:bg-panel/50"
         >
           <span class="text-xl underline decoration-link underline-offset-4">{{ publicName(s) }}</span>
           <span class="text-2xl font-bold whitespace-nowrap text-club-teal tabular-nums">
-            {{ s.points }} <small class="text-[15px] font-normal text-black">{{ s.points === 1 ? 'point' : 'points' }}</small>
-            <span class="ml-1 text-black">›</span>
+            {{ s.points }} <small class="text-[15px] font-normal text-ink">{{ s.points === 1 ? 'point' : 'points' }}</small>
+            <span class="ml-1 text-ink">›</span>
           </span>
         </NuxtLink>
       </li>
-      <li v-if="!results.length" class="px-1.5 py-3.5 text-center text-gray-600 italic">
+      <li v-if="!results.length" class="px-1.5 py-3.5 text-center text-muted italic">
         {{ waiting ? 'Searching…' : 'No one found. Check the spelling, or ask an instructor.' }}
       </li>
     </ul>

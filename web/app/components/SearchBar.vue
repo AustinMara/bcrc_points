@@ -5,7 +5,7 @@
 
   Props:
     placeholder   the hint text, also used as the box's accessible label
-    large         a big, easy-to-see box in a gray raised frame, with a thick blinking
+    large         a big, easy-to-see box in a raised frame, with a thick blinking
                   retro block cursor (the student site's main search)
     autofocus     put the cursor in the box as soon as the page appears
 
@@ -40,8 +40,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="sticky top-0 z-10 bg-white pt-2.5 pb-2">
-    <div class="flex gap-1.5" :class="large && 'bevel-out bg-silver p-2'">
+  <div class="sticky top-0 z-10 bg-page pt-2.5 pb-2">
+    <div class="flex gap-1.5" :class="large && 'bevel-out bg-panel p-2'">
       <div class="relative flex-1">
         <input
           ref="input"
@@ -71,7 +71,7 @@ onMounted(() => {
           class="pointer-events-none absolute inset-0 flex items-center overflow-hidden px-[18px] text-2xl"
         >
           <span class="invisible whitespace-pre">{{ text }}</span>
-          <span class="ml-0.5 h-[1.1em] w-[0.55em] shrink-0 animate-blink bg-black motion-reduce:animate-none" />
+          <span class="ml-0.5 h-[1.1em] w-[0.55em] shrink-0 animate-blink bg-ink motion-reduce:animate-none" />
         </div>
       </div>
       <slot />

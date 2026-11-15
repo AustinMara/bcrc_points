@@ -37,13 +37,13 @@ async function login() {
 
   <form class="mx-auto mt-8 grid max-w-[360px] gap-3" @submit.prevent="login">
     <h1 class="mb-1 text-[26px] font-bold">Instructor login</h1>
-    <p v-if="demo?.demo" class="border border-black bg-yellow-100 px-2.5 py-2 text-[15px]">
+    <p v-if="demo?.demo" class="border border-black bg-yellow-100 text-black px-2.5 py-2 text-[15px]">
       <b>Demo mode:</b> no database is connected, so changes are temporary.
       Log in with <code>{{ demo.username }}</code> / <code>{{ demo.password }}</code>.
     </p>
     <input v-model="username" class="field" placeholder="Username" autocomplete="username" autocapitalize="none" required>
     <input v-model="password" type="password" class="field" placeholder="Password" autocomplete="current-password" required>
     <button class="btn justify-self-start" :disabled="busy">Log in</button>
-    <p v-if="error" class="text-red-700">{{ error }}</p>
+    <p v-if="error" class="text-danger">{{ error }}</p>
   </form>
 </template>

@@ -2,8 +2,9 @@
   app.vue: the frame around every page: the header, then the current page.
 
   The student-facing site lives at / and the instructor site under /instructor.
-  The header adapts: on student pages it links to the instructor area; inside the
-  instructor area it shows who is logged in and a Log out link.
+  The header shows a small club logo (except on the home page, which has the big logo)
+  and adapts: on student pages it links to the instructor area; inside the instructor
+  area it shows who is logged in and a Log out link.
 
   logout()  ends the instructor's session and reloads the app, which also empties
             the browser's student cache (see composables/useRoster.ts).
@@ -20,10 +21,13 @@ async function logout() {
 </script>
 
 <template>
-  <header class="mx-auto flex max-w-3xl items-baseline justify-between border-b-[3px] border-double border-black px-3 pt-2.5 pb-1.5">
-    <NuxtLink :to="inInstructorArea ? '/instructor' : '/'" class="text-[28px] font-bold text-black! no-underline">
-      BCRC <span class="text-club-teal">Points</span>
+  <header class="mx-auto flex max-w-3xl items-center justify-between gap-3 px-3 pt-3 pb-2" :class="route.path !== '/' && 'border-b-[3px] border-double border-line'">
+    <NuxtLink v-if="route.path !== '/'" :to="inInstructorArea ? '/instructor' : '/'" class="flex items-center gap-2 no-underline">
+      <img src="/images/bcrc-logo.png" alt="Bellingham + Skagit Coding + Robotics Club" class="h-10 w-auto">
+      <span class="text-lg font-bold text-club-teal">Points</span>
     </NuxtLink>
+    <span v-else />
+
     <div class="flex gap-3 text-[15px]">
       <template v-if="inInstructorArea && loggedIn">
         <span class="max-[420px]:hidden">{{ user?.name || user?.username }}</span>

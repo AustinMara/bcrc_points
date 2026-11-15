@@ -1,31 +1,46 @@
 /*
   main.css: the whole site's look, built on Tailwind.
 
-  The style is a plain 90s web page (gray beveled buttons, sunken inputs, blue
-  links) in the Lexend font, with the club's colors from bellinghamcodingclub.com
-  as accents. Pages style themselves with Tailwind utility classes; this file only
-  defines what those classes are built from:
+  A 90s web page (beveled 3D buttons, sunken inputs, raised header bars) in a dark slate
+  color scheme taken from points.bellinghamcodingclub.com, in the Lexend font, with the
+  club's teal and orange as accents. Pages style themselves with Tailwind utility classes;
+  this file only defines what those classes are built from:
 
-    @theme       colors, font, and the cursor blink, which become utilities like bg-silver,
-                 text-club-teal, or animate-blink
+    @theme       colors, font, and the cursor blink. Each color becomes utilities such as
+                 bg-page, text-ink, border-line, or text-club-teal. Change a color here and
+                 the whole site follows.
     bevel-out    utility: raised 3D border (buttons, header bars)
     bevel-in     utility: sunken 3D border (text boxes)
-    .btn         gray raised button that looks pressed when clicked
+    .btn         raised button that looks pressed when clicked
     .btn-hot     the orange +50 button
-    .field       sunken white text box
+    .field       sunken text box
 */
 @import "tailwindcss";
 
 @theme {
   --font-sans: Lexend, Verdana, sans-serif;
 
-  --color-club-teal: #1e7c83;   /* darker club teal, readable as text on white */
+  /* Surfaces */
+  --color-page: #2d3343;        /* page background (from points.bellinghamcodingclub.com) */
+  --color-panel: #444c63;       /* raised surfaces: buttons, header bars, bottom bar */
+  --color-well: #1e2230;        /* sunken surfaces: text boxes */
+  --color-line: #4a5268;        /* divider lines between rows */
+  --color-selected: #17707a;    /* selected rows */
+
+  /* Bevel edges */
+  --color-highlight: #6b7590;   /* lit edge of a 3D border */
+  --color-shade: #171b26;       /* shadowed edge of a 3D border */
+
+  /* Text */
+  --color-ink: #e4e4e4;         /* normal text (from the reference site) */
+  --color-muted: #a9b0c2;       /* hints and secondary text */
+  --color-danger: #ff8a80;      /* errors and negative points */
+  --color-link: #5fd8de;
+  --color-visited: #c3a6ff;
+
+  /* Club accents */
+  --color-club-teal: #16aeb4;   /* the reference site's button color */
   --color-club-orange: #fd5c12;
-  --color-silver: #c0c0c0;      /* classic gray */
-  --color-shade: #808080;       /* bevel shadow */
-  --color-navy: #000080;        /* classic selection color */
-  --color-link: #0000ee;
-  --color-visited: #551a8b;
 
   /* Old-terminal cursor blink: fully on, then fully off (no fade). */
   --animate-blink: blink 1s steps(1) infinite;
@@ -36,34 +51,34 @@
 
 @utility bevel-out {
   border: 2px solid;
-  border-color: #fff var(--color-shade) var(--color-shade) #fff;
+  border-color: var(--color-highlight) var(--color-shade) var(--color-shade) var(--color-highlight);
 }
 
 @utility bevel-in {
   border: 2px solid;
-  border-color: var(--color-shade) #fff #fff var(--color-shade);
+  border-color: var(--color-shade) var(--color-highlight) var(--color-highlight) var(--color-shade);
 }
 
 @layer base {
   * { -webkit-tap-highlight-color: transparent; }
-  body { @apply bg-white font-sans text-[17px] leading-normal text-black; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-page font-sans text-[17px] leading-normal text-ink; -webkit-text-size-adjust: 100%; }
   a { @apply text-link underline; }
   a:visited { @apply text-visited; }
-  input[type="checkbox"] { @apply size-5 shrink-0; }
+  input[type="checkbox"] { @apply size-5 shrink-0 accent-club-teal; }
 }
 
 @layer components {
   .btn {
-    @apply bevel-out cursor-pointer bg-silver px-3.5 py-1.5 text-base text-black shadow-[1px_1px_0_#000];
+    @apply bevel-out cursor-pointer bg-panel px-3.5 py-1.5 text-base text-ink shadow-[1px_1px_0_#000];
   }
   .btn:active:not(:disabled) { @apply bevel-in shadow-none; }
-  .btn:disabled { @apply cursor-default text-shade; text-shadow: 1px 1px 0 #fff; }
+  .btn:disabled { @apply cursor-default text-muted/60; }
 
-  .btn-hot { @apply bg-club-orange text-lg font-bold; }
+  .btn-hot { @apply bg-club-orange text-lg font-bold text-black; }
 
   /* 16px+ text stops iPhones from zooming in when a box is tapped. */
   .field {
-    @apply bevel-in min-w-0 bg-white px-2 py-1.5 text-black shadow-[inset_1px_1px_0_#000];
-    @apply focus:outline-1 focus:outline-offset-2 focus:outline-black focus:outline-dotted;
+    @apply bevel-in min-w-0 bg-well px-2 py-1.5 text-ink shadow-[inset_1px_1px_0_#000] placeholder:text-muted;
+    @apply focus:outline-1 focus:outline-offset-2 focus:outline-ink focus:outline-dotted;
   }
 }

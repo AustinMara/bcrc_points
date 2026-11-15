@@ -13,7 +13,7 @@ const { data, error } = await useFetch<PublicStudentDetail>(`/api/public/student
   <div class="mx-auto max-w-xl">
     <BackLink fallback="/">‹ Back to search</BackLink>
 
-    <p v-if="error" class="mt-4 text-red-700">We couldn't find that student.</p>
+    <p v-if="error" class="mt-4 text-danger">We couldn't find that student.</p>
 
     <template v-else-if="data">
       <div class="mt-4 text-center">

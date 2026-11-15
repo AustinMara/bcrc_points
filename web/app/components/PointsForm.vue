@@ -42,6 +42,6 @@ async function submit(points: number | null) {
       <button type="submit" class="btn" :disabled="busy || !amount">Give</button>
       <button type="button" class="btn btn-hot" :disabled="busy" @click="submit(QUICK_POINTS)">{{ signed(QUICK_POINTS) }}</button>
     </div>
-    <p v-if="error" class="m-0 text-sm text-red-700">{{ error }}</p>
+    <p v-if="error" class="m-0 text-sm text-danger">{{ error }}</p>
   </form>
 </template>

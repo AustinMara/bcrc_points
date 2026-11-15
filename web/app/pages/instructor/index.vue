@@ -113,7 +113,7 @@ async function submitNewStudent() {
         <input ref="firstNameInput" v-model="firstName" class="field flex-[1_1_130px]" placeholder="First name" autocapitalize="words" required>
         <input v-model="lastName" class="field flex-[1_1_130px]" placeholder="Last name" autocapitalize="words" required>
         <button class="btn">Add</button>
-        <p v-if="addError" class="m-0 w-full text-red-700">{{ addError }}</p>
+        <p v-if="addError" class="m-0 w-full text-danger">{{ addError }}</p>
       </form>
     </template>
   </SearchBar>
@@ -135,8 +135,8 @@ async function submitNewStudent() {
     <li
       v-for="s in visibleStudents"
       :key="s.id"
-      class="flex items-center border-b border-silver"
-      :class="selectedIds.has(s.id) && 'bg-navy text-white'"
+      class="flex items-center border-b border-line"
+      :class="selectedIds.has(s.id) && 'bg-selected text-white'"
     >
       <label class="flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 px-1.5 py-2.5">
         <input type="checkbox" :checked="selectedIds.has(s.id)" @change="toggleSelected(s.id)">
@@ -146,17 +146,17 @@ async function submitNewStudent() {
       <NuxtLink
         :to="`/instructor/students/${s.id}`"
         class="flex size-11 items-center justify-center text-3xl leading-none no-underline"
-        :class="selectedIds.has(s.id) ? 'text-white!' : 'text-black!'"
+        :class="selectedIds.has(s.id) ? 'text-white!' : 'text-ink!'"
         :aria-label="`Open ${fullName(s)}`"
       >›</NuxtLink>
       <button
-        class="ml-3 flex size-11 cursor-pointer items-center justify-center border-l border-silver text-2xl"
-        :class="isFavorite(s.id) ? 'text-club-orange' : 'text-gray-400'"
+        class="ml-3 flex size-11 cursor-pointer items-center justify-center border-l border-line text-2xl"
+        :class="isFavorite(s.id) ? 'text-club-orange' : 'text-muted'"
         :aria-label="isFavorite(s.id) ? 'Remove from my students' : 'Add to my students'"
         @click="toggleFavorite(s.id)"
       >{{ isFavorite(s.id) ? '★' : '☆' }}</button>
     </li>
-    <li v-if="!visibleStudents.length" class="px-1.5 py-3.5 text-gray-600 italic">
+    <li v-if="!visibleStudents.length" class="px-1.5 py-3.5 text-muted italic">
       <template v-if="!isSearching">No starred students yet. Search above and click ☆ to keep your regulars here.</template>
       <template v-else-if="checkingServer">Searching…</template>
       <template v-else>No matches. Click + to add them as a new student.</template>
@@ -166,7 +166,7 @@ async function submitNewStudent() {
   <!-- Pinned to the bottom of the screen while anyone is selected; the spacer keeps the list scrollable past it. -->
   <template v-if="selectedIds.size">
     <div class="h-44" />
-    <div class="fixed inset-x-0 bottom-0 z-20 border-t-2 border-white bg-silver pt-2 pb-[calc(10px+env(safe-area-inset-bottom))] shadow-[0_-1px_0_var(--color-shade)]">
+    <div class="fixed inset-x-0 bottom-0 z-20 border-t-2 border-highlight bg-panel pt-2 pb-[calc(10px+env(safe-area-inset-bottom))] shadow-[0_-1px_0_var(--color-shade)]">
       <div class="mx-auto max-w-3xl px-3">
         <div class="flex items-center gap-1.5 overflow-x-auto pb-2 whitespace-nowrap">
           <b>{{ selectedIds.size }} selected</b>
