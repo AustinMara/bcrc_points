@@ -169,7 +169,7 @@ def seed(count):
 def list_table(table):
     """Print a table (instructor password hashes are hidden)."""
     queries = {
-        "students": "SELECT id, first_name, last_name, points FROM Students ORDER BY last_name, first_name",
+        "students": "SELECT id, first_name, last_name, points, public_code FROM Students ORDER BY last_name, first_name",
         "instructors": "SELECT id, username, name, favorites FROM Instructors ORDER BY id",
         "points": """SELECT p.id, p.student_id, s.first_name || ' ' || s.last_name AS student,
                             p.points_value, p.points_reason

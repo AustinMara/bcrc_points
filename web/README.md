@@ -43,7 +43,7 @@ Every source file starts with a comment explaining what it does and what each fu
 **Pages (routes)**
 - `/`: `app/pages/index.vue`, the public student site: big search box, type your name, see your points. No login.
   The search is kept in the address (`/?q=ben`) so Back from a ledger returns to the results.
-- `/students/:id`: a student's public ledger (first name + last initial, total, every award)
+- `/students/:code`: a student's public ledger, by their random public code (name, total, every award)
 - `/instructor`: `app/pages/instructor/index.vue`: search, multi-select, +50 bar, add student (+)
 - `/instructor/students/:id`: one student's total and history
 - `/instructor/login`: instructor login (shows the demo login in demo mode)
@@ -55,7 +55,7 @@ Every source file starts with a comment explaining what it does and what each fu
 - `app/composables/useDebounced.ts`: waits for typing to pause before searching
 
 **Server code**
-- `server/api/public/points.get.ts`: public lookup (first name + last initial only)
+- `server/api/public/points.get.ts`: public lookup (name, points, and ledger code; never the id)
 - `server/api/`: `auth/login`, `favorites` (list/star/unstar), `students` (search/add/detail), `points`, `demo`
 - `server/utils/`: `db.ts` (connection + `query()`), `students.ts`, `password.ts`
 - `server/database/schema.sql`: the table definitions, shared with `bcrc.py init`

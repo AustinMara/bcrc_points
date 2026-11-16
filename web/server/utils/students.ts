@@ -2,14 +2,14 @@
 //
 // STUDENT_COLUMNS          the columns instructor queries return, matching the Student type
 // PUBLIC_STUDENT_COLUMNS   the columns public queries return, matching PublicStudent
-//                          (last name cut to its first letter inside the database)
+//                          (the random public code instead of the id)
 // getStudentsByIds(ids)    load several students by id in one query
 // getPointsHistory(id)     one student's points history, newest first
 
 export const STUDENT_COLUMNS = 'id, first_name, last_name, COALESCE(points, 0) AS points'
 
 export const PUBLIC_STUDENT_COLUMNS =
-  'id, first_name, substr(last_name, 1, 1) AS last_initial, COALESCE(points, 0) AS points'
+  'public_code AS code, first_name, last_name, COALESCE(points, 0) AS points'
 
 export function getStudentsByIds(ids: number[]): Promise<Student[]> {
   return query<Student>(`SELECT ${STUDENT_COLUMNS} FROM Students WHERE id IN (${placeholders(ids.length)})`, ids)

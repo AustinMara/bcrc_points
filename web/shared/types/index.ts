@@ -1,7 +1,7 @@
 // The data shapes shared by the browser (app/) and the API (server/). Nuxt auto-imports these.
 //
 // Student               a student as instructors see them
-// PublicStudent         what the public site sees: id, first name, last initial, points
+// PublicStudent         what the public site sees: ledger code, name, points (no id)
 // PointsEntry           one line of a student's points history
 // StudentDetail         a student plus their history (instructor student page)
 // PublicStudentDetail   the same for the public ledger page
@@ -13,11 +13,11 @@ export interface Student {
   points: number
 }
 
-/** What the public student-facing site sees: never the full last name. */
+/** What the public student-facing site sees. `code` is the random ledger link code. */
 export interface PublicStudent {
-  id: number
+  code: string
   first_name: string
-  last_initial: string
+  last_name: string
   points: number
 }
 

@@ -2,8 +2,8 @@
   pages/index.vue: the student-facing home page (/). No login.
 
   A big search box front and center: kids type their name, see their points, and tap
-  their name to open their ledger (/students/:id). Results show first name + last
-  initial only, and nothing is shown until PUBLIC_SEARCH_MIN_LETTERS letters are typed.
+  their name to open their ledger (/students/:code, a random code, not the id). Nothing
+  is shown until PUBLIC_SEARCH_MIN_LETTERS letters are typed.
 
   The search text is kept in the address (/?q=ben), so the Back button from a ledger
   returns to the same results, and a kid can bookmark their own search.
@@ -63,12 +63,12 @@ watch(debouncedText, async (text) => {
     </p>
 
     <ul v-else class="mt-2">
-      <li v-for="s in results" :key="s.id" class="border-b border-line">
+      <li v-for="s in results" :key="s.code" class="border-b border-line">
         <NuxtLink
-          :to="`/students/${s.id}`"
+          :to="`/students/${s.code}`"
           class="flex items-baseline justify-between gap-3 px-1.5 py-3 text-ink! no-underline hover:bg-panel/50"
         >
-          <span class="text-xl underline decoration-link underline-offset-4">{{ publicName(s) }}</span>
+          <span class="text-xl underline decoration-link underline-offset-4">{{ fullName(s) }}</span>
           <span class="text-2xl font-bold whitespace-nowrap text-club-teal tabular-nums">
             {{ s.points }} <small class="text-[15px] font-normal text-ink">{{ s.points === 1 ? 'point' : 'points' }}</small>
             <span class="ml-1 text-ink">›</span>

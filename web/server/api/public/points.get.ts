@@ -1,8 +1,7 @@
 // GET /api/public/points?q=name: public points search for the student-facing site. No login.
 //
-// To protect kids' privacy it returns only first name + last initial (plus the id, so a
-// result can link to its ledger), needs at least PUBLIC_SEARCH_MIN_LETTERS letters, and
-// returns at most 10 matches. Vercel's CDN may reuse an answer for 30 seconds, so many
+// Returns name, points, and the random ledger code (never the id, so ledger links can't be
+// guessed). Needs at least PUBLIC_SEARCH_MIN_LETTERS letters and returns at most 10 matches. Vercel's CDN may reuse an answer for 30 seconds, so many
 // kids searching at once doesn't mean many database queries.
 
 export default defineEventHandler(async (event): Promise<PublicStudent[]> => {

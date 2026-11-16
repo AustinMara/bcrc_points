@@ -13,7 +13,10 @@ CREATE TABLE IF NOT EXISTS `Students` (
     `id` integer PRIMARY KEY,
     `first_name` text NOT NULL,
     `points` integer,
-    `last_name` text NOT NULL
+    `last_name` text NOT NULL,
+    -- Random code for the student's public ledger link (/students/3f9a1c07be), so links
+    -- can't be guessed by counting ids. The database fills it in on every new student.
+    `public_code` text NOT NULL UNIQUE DEFAULT (lower(hex(randomblob(5))))
 );
 
 CREATE TABLE IF NOT EXISTS `Points` (
