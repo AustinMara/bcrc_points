@@ -5,6 +5,7 @@
 // fullName(student)           "Ben Smith"
 // byName(a, b)                sort by last name, then first name
 // signed(points)              50 -> "+50", -3 -> "-3"
+// formatDate(created_at)      "2026-11-16 02:30:00" (UTC) -> "Nov 15, 2026" (club time)
 
 /** Most students one server search returns. */
 export const SEARCH_LIMIT = 25
@@ -24,4 +25,17 @@ export function byName(a: Student, b: Student): number {
 /** 50 -> "+50", -3 -> "-3" */
 export function signed(points: number): string {
   return points > 0 ? `+${points}` : String(points)
+}
+
+/** Dates show in the club's time zone, so the server and the browser print the same day. */
+const clubDate = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/Los_Angeles',
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+})
+
+/** "2026-11-16 02:30:00" (UTC, as the database stores it) -> "Nov 15, 2026" */
+export function formatDate(createdAt: string): string {
+  return clubDate.format(new Date(createdAt.replace(' ', 'T') + 'Z'))
 }

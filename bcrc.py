@@ -172,7 +172,7 @@ def list_table(table):
         "students": "SELECT id, first_name, last_name, points, public_code FROM Students ORDER BY last_name, first_name",
         "instructors": "SELECT id, username, name, favorites FROM Instructors ORDER BY id",
         "points": """SELECT p.id, p.student_id, s.first_name || ' ' || s.last_name AS student,
-                            p.points_value, p.points_reason
+                            p.points_value, p.points_reason, p.created_at
                      FROM Points p LEFT JOIN Students s ON s.id = p.student_id ORDER BY p.id""",
     }
     print_rows(get_conn().execute(queries[table.lower()]))

@@ -25,6 +25,8 @@ export interface PointsEntry {
   id: number
   points_value: number
   points_reason: string | null
+  /** UTC "YYYY-MM-DD HH:MM:SS", or null for points given before dates were recorded */
+  created_at: string | null
 }
 
 export interface StudentDetail {

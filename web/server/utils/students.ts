@@ -17,7 +17,7 @@ export function getStudentsByIds(ids: number[]): Promise<Student[]> {
 
 export function getPointsHistory(studentId: number): Promise<PointsEntry[]> {
   return query<PointsEntry>(
-    'SELECT id, points_value, points_reason FROM Points WHERE student_id = ? ORDER BY id DESC',
+    'SELECT id, points_value, points_reason, created_at FROM Points WHERE student_id = ? ORDER BY id DESC',
     [studentId],
   )
 }

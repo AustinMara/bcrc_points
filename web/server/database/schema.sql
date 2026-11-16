@@ -23,7 +23,10 @@ CREATE TABLE IF NOT EXISTS `Points` (
     `id` integer PRIMARY KEY,
     `student_id` integer,
     `points_reason` text(64),
-    `points_value` integer NOT NULL
+    `points_value` integer NOT NULL,
+    -- When the points were given, in UTC ("2026-11-15 18:30:00"), filled in by the database.
+    -- Empty for points given before dates were recorded.
+    `created_at` text DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS `student_uid` ON `Points` (`student_id`);
