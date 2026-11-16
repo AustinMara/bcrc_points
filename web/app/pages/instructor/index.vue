@@ -128,7 +128,7 @@ async function submitNewStudent() {
 
   <ul>
     <!--
-      Row layout: [☐ name  points] [›] | [★]
+      Row layout: [☐ first  last  points] [›] | [★]
       Tapping the name area selects the student; › opens their page; the star sits alone at
       the far right behind a divider. Both buttons are 44×44px so thumbs don't hit the wrong one.
     -->
@@ -140,7 +140,11 @@ async function submitNewStudent() {
     >
       <label class="flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 px-1.5 py-2.5">
         <input type="checkbox" :checked="selectedIds.has(s.id)" @change="toggleSelected(s.id)">
-        <span class="min-w-0 flex-1 truncate">{{ fullName(s) }}</span>
+        <!-- First and last name in two equal columns, so names line up for quick scanning -->
+        <span class="grid min-w-0 flex-1 grid-cols-2 gap-3">
+          <span class="truncate">{{ s.first_name }}</span>
+          <span class="truncate">{{ s.last_name }}</span>
+        </span>
         <span class="font-bold tabular-nums">{{ s.points }}</span>
       </label>
       <NuxtLink
