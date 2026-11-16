@@ -62,22 +62,33 @@ watch(debouncedText, async (text) => {
       Type at least {{ PUBLIC_SEARCH_MIN_LETTERS }} letters.
     </p>
 
-    <ul v-else class="mt-2">
-      <li v-for="s in results" :key="s.code" class="border-b border-line">
-        <NuxtLink
-          :to="`/students/${s.code}`"
-          class="flex items-baseline justify-between gap-3 px-1.5 py-3 text-ink! no-underline hover:bg-panel/50"
-        >
-          <span class="text-xl underline decoration-link underline-offset-4">{{ fullName(s) }}</span>
-          <span class="text-2xl font-bold whitespace-nowrap text-club-teal tabular-nums">
-            {{ s.points }} <small class="text-[15px] font-normal text-ink">{{ s.points === 1 ? 'point' : 'points' }}</small>
-            <span class="ml-1 text-ink">›</span>
-          </span>
-        </NuxtLink>
-      </li>
-      <li v-if="!results.length" class="px-1.5 py-3.5 text-center text-muted italic">
-        {{ waiting ? 'Searching…' : 'No one found. Check the spelling, or ask an instructor.' }}
-      </li>
-    </ul>
+    <!--
+      One grid for the labels and every result: [first | last | points]. Each row is a
+      subgrid, so the columns line up across rows, and the points column is as wide as
+      the widest total.
+    -->
+    <div v-else class="mt-2 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-x-3">
+      <div v-if="results.length" class="col-span-3 grid grid-cols-subgrid px-1.5 text-xs tracking-wide text-muted uppercase" aria-hidden="true">
+        <span>First</span><span>Last</span>
+      </div>
+      <ul class="col-span-3 grid grid-cols-subgrid">
+        <li v-for="s in results" :key="s.code" class="col-span-3 grid grid-cols-subgrid border-b border-line">
+          <NuxtLink
+            :to="`/students/${s.code}`"
+            class="col-span-3 grid grid-cols-subgrid items-baseline px-1.5 py-3 text-ink! no-underline hover:bg-panel/50"
+          >
+            <span class="truncate text-xl underline decoration-link underline-offset-4">{{ s.first_name }}</span>
+            <span class="truncate text-xl underline decoration-link underline-offset-4">{{ s.last_name }}</span>
+            <span class="text-right text-2xl font-bold whitespace-nowrap text-club-teal tabular-nums">
+              {{ s.points }} <small class="text-[15px] font-normal text-ink">{{ s.points === 1 ? 'point' : 'points' }}</small>
+              <span class="ml-1 text-ink">›</span>
+            </span>
+          </NuxtLink>
+        </li>
+        <li v-if="!results.length" class="col-span-3 px-1.5 py-3.5 text-center text-muted italic">
+          {{ waiting ? 'Searching…' : 'No one found. Check the spelling, or ask an instructor.' }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>

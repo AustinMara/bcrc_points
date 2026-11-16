@@ -126,6 +126,16 @@ async function submitNewStudent() {
     <span v-if="isSearching && checkingServer" class="text-sm italic">checking for more…</span>
   </ListHeader>
 
+  <!-- Column labels. Mirrors a row's layout (hidden checkbox, fixed points and button widths) so they line up. -->
+  <div v-if="visibleStudents.length" class="flex text-xs tracking-wide text-muted uppercase" aria-hidden="true">
+    <div class="flex min-w-0 flex-1 items-center gap-2.5 px-1.5 pt-1.5 pb-0.5">
+      <input type="checkbox" class="invisible" tabindex="-1">
+      <span class="grid min-w-0 flex-1 grid-cols-2 gap-3"><span>First</span><span>Last</span></span>
+      <span class="w-16" />
+    </div>
+    <span class="w-11" /><span class="ml-3 w-11" />
+  </div>
+
   <ul>
     <!--
       Row layout: [☐ first  last  points] [›] | [★]
@@ -145,7 +155,7 @@ async function submitNewStudent() {
           <span class="truncate">{{ s.first_name }}</span>
           <span class="truncate">{{ s.last_name }}</span>
         </span>
-        <span class="font-bold tabular-nums">{{ s.points }}</span>
+        <span class="w-16 text-right font-bold tabular-nums">{{ s.points }}</span>
       </label>
       <NuxtLink
         :to="`/instructor/students/${s.id}`"
